@@ -64,10 +64,18 @@ namespace Helpy.Conversation
                 return null;
             }
 
-            var valueText = last.Groups["payload"].Value;
-            var json = Convert.FromBase64String(valueText);
+            try
+            {
+                var valueText = last.Groups["payload"].Value;
+                var json = Convert.FromBase64String(valueText);
 
-            return JsonSerializer.Deserialize<ExceptionPayload>(valueText);
+                return JsonSerializer.Deserialize<ExceptionPayload>(json);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Could not deserialize exception\n{ex}");
+                return null;
+            }
         }
 
         private void FindDalamudTrouble()
