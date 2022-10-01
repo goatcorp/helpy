@@ -4,21 +4,8 @@
             "YarnName": "UploadTspack",
             "DefinitionName": "RunUploadTspack",
             "Language": "gml",
-            "Documentation": "Run a smile animation",
-            "Signature": "Smile(howWide)",
-            "Parameters": [
-                {
-                    "Name": "howWide",
-                    "DefaultValue": "very wide",
-                    "Type": "String",
-                    "Documentation": "Text to display in smile animation."
-                }
-            ]
-        },
-        {
-            "YarnName": "Frown",
-            "DefinitionName": "RunFrownAnimation",
-            "Language": "gml"
+            "Documentation": "Uploads a troubleshooting pack for parsing",
+            "Parameters": []
         }
     ],
     "Functions": [
