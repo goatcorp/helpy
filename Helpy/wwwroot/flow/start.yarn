@@ -102,7 +102,7 @@ You might need to also restart your computer.
 title: Antivirus
 position: 626,62
 ---
-Please read [link href="https://goatcorp.github.io/faq/xl_troubleshooting#q-how-do-i-whitelist-xivlauncher-and-dalamud-so-my-antivirus-leaves-them-alone"]our FAQ entry[/link] regarding permitting XIVLauncher and Dalamud in your antivirus.
+Please read [link href="faq_av"]our FAQ entry[/link] regarding permitting XIVLauncher and Dalamud in your antivirus.
 Keep in mind that some antivirus software sometimes don't listen to the exclusions you make.
 You might also need to allow XIVLauncher and Dalamud through your firewall if you have one.
 ===
@@ -110,7 +110,7 @@ You might also need to allow XIVLauncher and Dalamud through your firewall if yo
 title: Internet
 position: 626,108
 ---
-Please read [link href="https://goatcorp.github.io/faq/xl_troubleshooting#q-the-official-launcher-isnt-working--xivlauncher-failed-to-check-for-updates--patch-files-could-not-be-verified"]our FAQ entry[/link] regarding network connection issues.
+Please read [link href="faq_connectivity"]our FAQ entry[/link] regarding network connection issues.
 ===
 
 title: GoToDiscord
@@ -119,7 +119,7 @@ position: 1033,191
 I don't think I can help you with this here.
 Please join our Discord server.
 
-[button href="https://goat.place/"]Join our Discord server[/button]
+[button href="discord"]Join our Discord server[/button]
 ===
 
 title: Goodbye
@@ -128,5 +128,5 @@ position: 1034,254
 That's all the advice I can offer. Thanks for using Helpy!
 If your issue isn't solved, consider trying Helpy again or joining our Discord server for more specialized help.
 
-[button href="https://goat.place/"]Join our Discord server[/button]
+[button href="discord"]Join our Discord server[/button]
 ===

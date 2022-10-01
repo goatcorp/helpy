@@ -14,7 +14,7 @@ else
     @foreach (var message in conversation.Messages)
     {
         var msgClass = "msg " + (message.IsUser ? "msg-user" : "msg-bot");
-        <p class="@msgClass">@message.Text</p>
+        <p class="@msgClass">@((MarkupString)message.Text)</p>
     }
 
     @switch(conversation.State)

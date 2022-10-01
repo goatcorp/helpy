@@ -7,6 +7,7 @@ namespace Helpy.Conversation
     {
         private Dialogue? dialogue;
         private Dictionary<string, string>? stringTable;
+        private Dictionary<string, string>? linkTable;
 
         public class Message
         {
@@ -43,6 +44,7 @@ namespace Helpy.Conversation
             State = ConversationState.Default;
 
             stringTable = await client.GetFromJsonAsync<Dictionary<string, string>>("flow/strings.json");
+            linkTable = await client.GetFromJsonAsync<Dictionary<string, string>>("flow/links.json");
 
             var script = await client.GetByteArrayAsync("flow/program.yarnc");
             var program = Yarn.Program.Parser.ParseFrom(script);
@@ -75,7 +77,35 @@ namespace Helpy.Conversation
             var lineStr = this.stringTable![line.ID];
             Console.WriteLine(lineStr);
 
-            Messages.Add(new(lineStr, false));
+            var markup = dialogue!.ParseMarkup(lineStr);
+            var rawLine = markup.Text;
+            foreach (var attrib in markup.Attributes)
+            {
+                var text = markup.TextForAttribute(attrib);
+                string? newText = null;
+
+                switch (attrib.Name)
+                {
+                    case "button":
+                    case "link":
+                        var linkKey = attrib.Properties["href"].StringValue;
+                        if (!linkTable!.TryGetValue(linkKey, out var linkHref))
+                            throw new Exception($"Could not find link in link table: {linkKey}");
+
+                        newText = $"<a href=\"{linkHref}\">{text}</a>";
+                        break;
+                    default:
+                        Console.WriteLine("Unknown attribute: {0}", attrib.Name);
+                        break;
+                }
+
+                if (newText != null)
+                {
+                    rawLine = rawLine.Remove(attrib.Position, attrib.Length).Insert(attrib.Position, newText);
+                }
+            }
+
+            Messages.Add(new(rawLine, false));
 
             if (State != ConversationState.Finish)
                 dialogue!.Continue();
