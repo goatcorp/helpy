@@ -8,7 +8,7 @@
   "resources": {
     "assembly": {
       "Google.Protobuf.dll": "sha256-mJcUmar4\/qkzTp8710U25eZVjC8tJ85CIUFoYGG+py8=",
-      "Helpy.dll": "sha256-SrrM+eeLD9oXD\/0\/Ty2VqwozRtzK\/b3sgy9nTS3o6Lo=",
+      "Helpy.dll": "sha256-6yIYfKAAPLwoLOuYg9xQg6+OuTmrepMRs99nPsqFRVw=",
       "Microsoft.AspNetCore.Components.dll": "sha256-Zz6uuf2U+lFEs8zfwP\/5lLZO1dnvlPM\/cFTY9FuyzTw=",
       "Microsoft.AspNetCore.Components.Web.dll": "sha256-a3b\/FPqBIFEdRu0eSOP7+gNGda54gug\/qguXw33Ul2s=",
       "Microsoft.AspNetCore.Components.WebAssembly.dll": "sha256-+gkVrkg4YKdalQDmmIn+jjzOGlwvY1HxwGT3q\/A6z\/w=",
