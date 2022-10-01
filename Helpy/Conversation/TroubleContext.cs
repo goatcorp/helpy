@@ -1,4 +1,5 @@
 ﻿using System.IO.Compression;
+using System.Reflection.Metadata;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 
@@ -16,10 +17,14 @@ namespace Helpy.Conversation
 
         public string? LauncherLog { get; private set; }
 
-        private Regex dalamudTroubleRegex = 
+        public ExceptionPayload? LastExceptionXL { get; private set; }
+        
+        public ExceptionPayload? LastExceptionDalamud { get; private set; }
+
+        private static Regex dalamudTroubleRegex = 
             new Regex("TROUBLESHOOTING:(?<payload>.*)$", RegexOptions.Compiled | RegexOptions.Multiline);
 
-        private Regex exceptionRegex =
+        private static Regex exceptionRegex =
             new Regex("LASTEXCEPTION:(?<payload>.*)$", RegexOptions.Compiled | RegexOptions.Multiline);
 
         public void LoadPack(byte[] data)
@@ -36,11 +41,33 @@ namespace Helpy.Conversation
                 throw new Exception("trouble.json deserialized to null");
 
             LauncherLog = ReadEntry(archive.GetEntry("output.log"));
+            LastExceptionXL = FindException(LauncherLog);
 
             DalamudLog = ReadEntry(archive.GetEntry("dalamud.log"));
             FindDalamudTrouble();
+            LastExceptionDalamud = FindException(DalamudLog);
 
             IsPackLoaded = true;
+        }
+
+        private static ExceptionPayload? FindException(string? log)
+        {
+            if (string.IsNullOrEmpty(log))
+                return null;
+
+            var matches = exceptionRegex.Matches(log);
+            var last = matches.LastOrDefault();
+
+            if (last == null)
+            {
+                Console.WriteLine("Log had no exception payloads");
+                return null;
+            }
+
+            var valueText = last.Groups["payload"].Value;
+            var json = Convert.FromBase64String(valueText);
+
+            return JsonSerializer.Deserialize<ExceptionPayload>(valueText);
         }
 
         private void FindDalamudTrouble()

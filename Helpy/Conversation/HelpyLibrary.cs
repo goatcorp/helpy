@@ -18,6 +18,8 @@ namespace Helpy.Conversation
             RegisterFunction("HasSpecificPlugin", FunHasSpecificPlugin);
             RegisterFunction("RegexLastExceptionDalamud", FunRegexLastExceptionDalamud);
             RegisterFunction("RegexLastExceptionXL", FunRegexLastExceptionXL);
+            RegisterFunction("HasRecentExceptionDalamud", FunHasRecentExceptionDalamud);
+            RegisterFunction("HasRecentExceptionXL", FunHasRecentExceptionXL);
             RegisterFunction("HasRecentException", FunHasRecentException);
         }
 
@@ -83,11 +85,25 @@ namespace Helpy.Conversation
             return false;
         }
 
-        private bool FunHasRecentException()
+        private bool FunHasRecentExceptionDalamud()
         {
             CheckPrecondition();
 
             return false;
+        }
+
+        private bool FunHasRecentExceptionXL()
+        {
+            CheckPrecondition();
+
+            return false;
+        }
+
+        private bool FunHasRecentException()
+        {
+            CheckPrecondition();
+
+            return FunHasRecentExceptionDalamud() || FunHasRecentExceptionXL();
         }
     }
 }
