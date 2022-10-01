@@ -24,6 +24,7 @@ else
 
         @case ConversationManager.ConversationState.UploadTsPack:
         {
+            <hr />
             <p>Drag the .tspack file here.</p>
                 <InputFile OnChange="@LoadTsPack"></InputFile>
         }
@@ -31,6 +32,8 @@ else
 
         @case ConversationManager.ConversationState.Choicer:
         {
+            <hr />
+            <p>Please pick a choice:</p>
             @foreach(var choice in conversation.Choices!)
             {
                     <p><a @onclick="() => conversation.ChoicerChoose(choice.Key)" href="#">@choice.Value</a></p>
