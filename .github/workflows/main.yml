@@ -18,6 +18,7 @@ jobs:
 
       - name: Install and Build
         run: |
+          sed -i 's/base href="\/"/base href="\/helpy\/"/g' Helpy/wwwroot/index.html
           cd Helpy.ScriptCompiler
           dotnet run -- ../Helpy/wwwroot/flow
           cd ../Helpy
