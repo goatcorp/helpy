@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32922.545
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Helpy", "Helpy\Helpy.csproj", "{716B01D6-03DF-4144-BF4A-A359709EB5AC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helpy.ScriptCompiler", "Helpy.ScriptCompiler\Helpy.ScriptCompiler.csproj", "{3D5916F2-BDB5-4ACB-B879-2423C1F1CFF2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{716B01D6-03DF-4144-BF4A-A359709EB5AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{716B01D6-03DF-4144-BF4A-A359709EB5AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{716B01D6-03DF-4144-BF4A-A359709EB5AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{716B01D6-03DF-4144-BF4A-A359709EB5AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D5916F2-BDB5-4ACB-B879-2423C1F1CFF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D5916F2-BDB5-4ACB-B879-2423C1F1CFF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D5916F2-BDB5-4ACB-B879-2423C1F1CFF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D5916F2-BDB5-4ACB-B879-2423C1F1CFF2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1579A732-D1B0-4EA8-92AD-23497F45ED25}
+	EndGlobalSection
+EndGlobal

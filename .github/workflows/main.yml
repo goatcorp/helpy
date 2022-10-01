@@ -1,0 +1,29 @@
+name: Build and Deploy
+on: [push]
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    concurrency: ci-${{ github.ref }} # Recommended if you intend to make multiple deployments in quick succession.
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - uses: actions/setup-dotnet@v3
+        name: Set up DotNet
+        with:
+          dotnet-version: '6.0.x'
+
+      - name: Install and Build
+        run: |
+          cd Helpy.ScriptCompiler
+          dotnet run -- ../Helpy/wwwroot/flow
+          cd ../Helpy
+          dotnet publish -c Release
+
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: Helpy/bin/Release/net6.0/publish/wwwroot # The folder the action should deploy.

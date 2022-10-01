@@ -1,0 +1,71 @@
+﻿@page "/"
+
+@using Helpy.Conversation;
+@inject HttpClient Http
+
+<PageTitle>Index</PageTitle>
+
+@if(conversation == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    @foreach (var message in conversation.Messages)
+    {
+        var msgClass = "msg " + (message.IsUser ? "msg-user" : "msg-bot");
+        <p class="@msgClass">@message.Text</p>
+    }
+
+    @switch(conversation.State)
+    {
+        @case ConversationManager.ConversationState.Default:
+            break;
+
+        @case ConversationManager.ConversationState.UploadTsPack:
+        {
+            <p>Drag the .tspack file here.</p>
+                <InputFile OnChange="@LoadTsPack"></InputFile>
+        }
+            break;
+
+        @case ConversationManager.ConversationState.Choicer:
+        {
+            @foreach(var choice in conversation.Choices!)
+            {
+                    <p><a @onclick="() => conversation.ChoicerChoose(choice.Key)" href="#">@choice.Value</a></p>
+            }
+        }    
+            break;
+    }
+}
+
+@code {
+    private ConversationManager? conversation;
+
+    public async Task RunDialogue()
+    {
+        conversation = new ConversationManager();
+        await conversation.LoadAndInit(Http);
+    }
+
+    public async Task LoadTsPack(InputFileChangeEventArgs e)
+    {
+        using var stream = e.File.OpenReadStream();
+        conversation!.LoadTsPack(await ReadFully(stream));
+    }
+
+    public static async Task<byte[]> ReadFully(Stream input)
+    {
+        using (MemoryStream ms = new MemoryStream())
+        {
+            await input.CopyToAsync(ms);
+            return ms.ToArray();
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await RunDialogue();
+    }
+}
