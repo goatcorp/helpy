@@ -1,4 +1,5 @@
-﻿using Yarn;
+﻿using System.Text.RegularExpressions;
+using Yarn;
 
 namespace Helpy.Conversation
 {
@@ -71,32 +72,50 @@ namespace Helpy.Conversation
             return trouble.PayloadDalamud?.LoadedPlugins.Any(x => x.InternalName == name) ?? false;
         }
 
-        private bool FunRegexLastExceptionDalamud(string regex)
+        private bool FunRegexLastExceptionDalamud(string regexStr)
         {
             CheckPrecondition();
 
-            return false;
+            if (trouble.LastExceptionDalamud == null)
+                return false;
+
+            var regex = new Regex(regexStr);
+            return regex.IsMatch(trouble.LastExceptionDalamud.Info);
         }
 
-        private bool FunRegexLastExceptionXL(string regex)
+        private bool FunRegexLastExceptionXL(string regexStr)
         {
             CheckPrecondition();
 
-            return false;
+            if (trouble.LastExceptionXL == null)
+                return false;
+
+            var regex = new Regex(regexStr);
+            return regex.IsMatch(trouble.LastExceptionXL.Info);
         }
+
+        const int ExceptionDaysLimit = 2;
 
         private bool FunHasRecentExceptionDalamud()
         {
             CheckPrecondition();
 
-            return false;
+            if (trouble.LastExceptionDalamud == null)
+                return false;
+
+            var timePassed = DateTime.Now - trouble.LastExceptionDalamud.When;
+            return timePassed.Days <= ExceptionDaysLimit;
         }
 
         private bool FunHasRecentExceptionXL()
         {
             CheckPrecondition();
 
-            return false;
+            if (trouble.LastExceptionXL == null)
+                return false;
+
+            var timePassed = DateTime.Now - trouble.LastExceptionXL.When;
+            return timePassed.Days <= ExceptionDaysLimit;
         }
 
         private bool FunHasRecentException()

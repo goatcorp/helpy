@@ -51,7 +51,7 @@ else
 
     public async Task LoadTsPack(InputFileChangeEventArgs e)
     {
-        using var stream = e.File.OpenReadStream(2_000_000);
+        using var stream = e.File.OpenReadStream(50_000_000);
         conversation!.LoadTsPack(await ReadFully(stream));
     }
 
