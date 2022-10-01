@@ -20,7 +20,7 @@ var result = Compiler.Compile(job);
 File.WriteAllBytes(Path.Combine(scriptFolder.FullName, "program.yarnc"), result.Program.ToByteArray());
 
 File.WriteAllText(Path.Combine(scriptFolder.FullName, "strings.json"), JsonSerializer.Serialize(result.StringTable.ToDictionary(x => x.Key, x => x.Value.text)));
-File.WriteAllText(Path.Combine(scriptFolder.FullName, "decl.json"), JsonSerializer.Serialize(result.Declarations));
+//File.WriteAllText(Path.Combine(scriptFolder.FullName, "decl.json"), JsonSerializer.Serialize(result.Declarations));
 
 
 Console.WriteLine($"Ok, compiled");
