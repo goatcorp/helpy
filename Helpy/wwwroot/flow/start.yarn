@@ -1,56 +1,132 @@
+
 title: Start
-tags: 
 position: -56,297
 ---
 
-Hi! I'm Helpy, the interactive and smart XIVLauncher helper. #line:0b1dc59 
-Please choose what you're here to get help with. #line:0e09820 
+Hi! I'm Helpy, the interactive and smart XIVLauncher helper.
+Please choose what you're here to get help with.
 
--> My game crashes or behaves strangely #line:0617d18 
+-> My game crashes or behaves strangely
     <<jump Crashes>>
--> A plugin does not work as expected #line:004c78e 
+-> A plugin or Dalamud does not work as expected
     <<jump Plugins>>
+-> The launcher isn't opening or behaves strangely
+    <<jump Launcher>>
 ===
 
 title: Crashes
-position: 265,430
+position: 252,387
 ---
-that sucks #line:0693522 
-<<UploadTspack>>
+<<if !visited("Crashes")>>
+    // TODO: images & instructions
+    <<UploadTspack>>
+<<endif>>
 
-<<if GetIndexMismatchKind()!=5>>
+<<if !$AlreadyRepaired && GetIndexMismatchKind() != 5>>
     <<jump DoRepair>>
 <<endif>>
 
 <<jump GoToDiscord>>
-
 ===
-title: Plugins
-position: 259,195
----
-go away #line:07a497c 
 
+title: Plugins
+position: 255,298
+---
+go away
+===
+
+title: Launcher
+position: 248,202
+---
+<<declare $RepairFailedFromLauncher = false as bool>>
+
+What's wrong with the launcher?
+
+-> The launcher is failing to open or update
+    That sucks.
+-> I can't log into the game
+    If you own the game through Steam, have a Security Token/One-Time Password linked, or are using the free trial, you'll need to enable the relevant checkboxes.
+    For Steam users, check the "Use Steam service" checkbox on the main menu.
+    For Security Token users, check the "Use One-Time-Passwords" checkbox on the main menu.
+    For Free Trial users, check the "Start in free trial mode" checkbox in the "About" tab of the settings menu.
+    This might also just be a general server outage. If all else fails, try checking online for the server status or waiting a while.
+    <<jump Goodbye>>
+-> The launcher failed to start the game
+    <<jump Antivirus>>
+-> The launcher says it can't start Dalamud
+    This is usually caused by either your antivirus or internet connection.
+    <<jump Antivirus>>
+    <<jump Internet>>
+-> I can't repair my game
+  <<set $RepairFailedFromLauncher to true>>
+  <<jump FailedRepair>>
 ===
 
 title: DoRepair
-position: 577,380
+position: 453,533
 ---
-You need to repair your game files. #line:021cbb6 
+<<declare $RepairFailedFromDoRepair = false as bool>>
+<<declare $AlreadyRepaired = false as bool>>
 
+<<if !$RepairFailedFromDoRepair>>
+    Your game files are corrupted and need to be repaired. This corruption may be caused by a third party program like TexTools.
+    Start XIVLauncher while holding Shift, right click Log in, and select Repair game files to start a game repair.
+    This process will take a few minutes - please hang tight. After it's done, all non-game files will be moved into a new folder.
+<<endif>>
+
+-> The repair fixed my issues
+  <<jump Goodbye>>
+-> I'm still experiencing issues
+  <<set $AlreadyRepaired to true>>
+  <<jump Crashes>>
+-> The repair failed <<if !$RepairFailedFromDoRepair>>
+  <<set $RepairFailedFromDoRepair to true>>
+  <<jump FailedRepair>>
+===
+
+title: FailedRepair
+position: 745,529
+---
+Try closing other programs related to FFXIV, like Teamcraft or TexTools.
+You might need to also restart your computer.
+
+<<if $RepairFailedFromDoRepair>>
+    <<jump DoRepair>>
+<<endif>>
+
+<<if $RepairFailedFromLauncher>>
+    <<jump Goodbye>>
+<<endif>>
+===
+
+title: Antivirus
+position: 626,62
+---
+Please read [link href="https://goatcorp.github.io/faq/xl_troubleshooting#q-how-do-i-whitelist-xivlauncher-and-dalamud-so-my-antivirus-leaves-them-alone"]our FAQ entry[/link] regarding permitting XIVLauncher and Dalamud in your antivirus.
+Keep in mind that some antivirus software sometimes don't listen to the exclusions you make.
+You might also need to allow XIVLauncher and Dalamud through your firewall if you have one.
+===
+
+title: Internet
+position: 626,108
+---
+Please read [link href="https://goatcorp.github.io/faq/xl_troubleshooting#q-the-official-launcher-isnt-working--xivlauncher-failed-to-check-for-updates--patch-files-could-not-be-verified"]our FAQ entry[/link] regarding network connection issues.
 ===
 
 title: GoToDiscord
-position: 577,234
+position: 1033,191
 ---
-I don't think I can help you with this here. #line:09975cb 
-Please join our discord. #line:0c31521 
+I don't think I can help you with this here.
+Please join our Discord server.
 
-[button href="http://google.com"]Join our Discord[/button] #line:0ab007a 
-
+[button href="https://goat.place/"]Join our Discord server[/button]
 ===
 
 title: Goodbye
-position: 411,93
+position: 1034,254
 ---
-That's it #line:08a9866 
+That's all the advice I can offer. Thanks for using Helpy!
+If your issue isn't solved, consider trying Helpy again or joining our Discord server for more specialized help.
+
+[button href="https://goat.place/"]Join our Discord server[/button]
 ===
