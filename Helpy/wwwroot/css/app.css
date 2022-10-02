@@ -91,7 +91,7 @@ a, .btn-link {
     margin-left: auto;
     margin-right: 0;
 }
-.msg.msg-user, .msg.msg-choices {
+.msg.msg-user, .msg.msg-choices, .msg.msg-action {
     margin-left: auto;
     margin-right: 0;
     background: white;
@@ -110,8 +110,6 @@ a, .btn-link {
 
 .msg.msg-action {
     width: 100%;
-    margin-left: auto;
-    margin-right: 0;
 }
 
 input {

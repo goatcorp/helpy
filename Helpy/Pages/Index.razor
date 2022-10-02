@@ -36,8 +36,10 @@ else
         @case ConversationManager.ConversationState.UploadTsPack:
         {
             <hr />
-            <p>Drag the .tspack file here.</p>
+            <div class="msg msg-action">
+                <p>Drag the .tspack file here.</p>
                 <InputFile OnChange="@LoadTsPack"></InputFile>
+            </div>
         }
             break;
 
