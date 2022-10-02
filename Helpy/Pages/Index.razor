@@ -17,16 +17,13 @@ else
         var isChange = lastWasUser != message.IsUser;
 
         var msgClass = "msg " + (message.IsUser ? "msg-user" : "msg-bot");
-        if (!isChange)
-            msgClass += " connected";
-
+        @if (isChange)
+        {
+            var nameClass = "name " + (message.IsUser ? "name-user" : "name-bot");
+            <span class=@nameClass>@(message.IsUser ? "You" : "Helpy")</span>
+            lastWasUser = message.IsUser;
+        }
         <div class="@msgClass">
-            @if (isChange)
-            {
-                <span class="username">@(message.IsUser ? "You" : "Helpy")</span>
-                lastWasUser = message.IsUser;
-            }
-            
             <p>@((MarkupString)message.Text)</p>
         </div>
     }
@@ -47,11 +44,13 @@ else
         @case ConversationManager.ConversationState.Choicer:
         {
             <hr />
+            <div class="msg msg-choices">
             <p>Please pick a choice:</p>
-            @foreach(var choice in conversation.Choices!)
-            {
-                    <p><a @onclick="() => conversation.ChoicerChoose(choice.Key)" href="#">@choice.Value</a></p>
-            }
+                @foreach(var choice in conversation.Choices!)
+                {
+                        <p class="choice"><a @onclick="() => conversation.ChoicerChoose(choice.Key)" href="#">@choice.Value</a></p>
+                }
+            </div>
         }    
             break;
 
