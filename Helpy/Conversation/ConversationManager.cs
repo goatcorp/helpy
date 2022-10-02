@@ -9,17 +9,37 @@ namespace Helpy.Conversation
         private Dictionary<string, string>? stringTable;
         private Dictionary<string, string>? linkTable;
 
-        public class Message
+        public abstract class Message
         {
-            public Message(string text, bool isUser)
+            public Message(bool isUser)
+            {
+                IsUser = isUser;
+            }
+            
+            public bool IsUser { get; private set; }
+        }
+        
+        public class TextMessage : Message
+        {
+            public TextMessage(string text, bool isUser) : base(isUser)
             {
                 Text = text;
-                IsUser = isUser;
             }
 
             public string Text { get; private set; }
+        }
+        
+        public class ImageMessage : Message
+        {
+            public ImageMessage(string src, string alt, bool isUser) : base(isUser)
+            {
+                Src = src;
+                Alt = alt;
+            }
 
-            public bool IsUser { get; private set; }
+            public string Src { get; private set; }
+            
+            public string Alt { get; private set; }
         }
 
         public List<Message> Messages { get; private set; } = new List<Message>();
@@ -79,6 +99,7 @@ namespace Helpy.Conversation
 
             var markup = dialogue!.ParseMarkup(lineStr);
             var rawLine = markup.Text;
+            string? imageLink = null;
             foreach (var attrib in markup.Attributes)
             {
                 var text = markup.TextForAttribute(attrib);
@@ -88,11 +109,23 @@ namespace Helpy.Conversation
                 {
                     case "button":
                     case "link":
+                    {
                         var linkKey = attrib.Properties["href"].StringValue;
                         if (!linkTable!.TryGetValue(linkKey, out var linkHref))
                             throw new Exception($"Could not find link in link table: {linkKey}");
 
                         newText = $"<a href=\"{linkHref}\">{text}</a>";
+                    }
+                        break;
+                    case "img":
+                    {
+                        var linkKey = attrib.Properties["src"].StringValue;
+                        if (!linkTable!.TryGetValue(linkKey, out var linkHref))
+                            throw new Exception($"Could not find img src in link table: {linkKey}");
+
+                        newText = string.Empty;
+                        imageLink = linkHref;
+                    }
                         break;
                     default:
                         Console.WriteLine("Unknown attribute: {0}", attrib.Name);
@@ -105,8 +138,12 @@ namespace Helpy.Conversation
                 }
             }
 
-            Messages.Add(new(rawLine, false));
-
+            if (!string.IsNullOrEmpty(rawLine)) 
+                Messages.Add(new TextMessage(rawLine, false));
+            
+            if (imageLink != null)
+                Messages.Add(new ImageMessage(imageLink, "aaa", false));
+                
             if (State != ConversationState.Finish)
                 dialogue!.Continue();
         }
@@ -160,7 +197,7 @@ namespace Helpy.Conversation
 
         public void ChoicerChoose(int option)
         {
-            Messages.Add(new(Choices![option], true));
+            Messages.Add(new TextMessage(Choices![option], true));
 
             dialogue!.SetSelectedOption(option);
             State = ConversationState.Default;

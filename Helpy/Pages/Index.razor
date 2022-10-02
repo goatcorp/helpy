@@ -24,7 +24,16 @@ else
             lastWasUser = message.IsUser;
         }
         <div class="@msgClass">
-            <p>@((MarkupString)message.Text)</p>
+            @if (message is ConversationManager.TextMessage textMessage)
+            {
+                <p>@((MarkupString)textMessage.Text)</p>
+            }
+            else if (message is ConversationManager.ImageMessage imageMessage)
+            {
+                <div class="msg-img-container">
+                    <img src="@imageMessage.Src" alt="@imageMessage.Alt"/>
+                </div>
+            }
         </div>
     }
 

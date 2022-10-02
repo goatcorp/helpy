@@ -25,6 +25,7 @@ position: 252,387
 <<endif>>
 
 <<if !$AlreadyRepaired && GetIndexMismatchKind() != 5>>
+    Your game installation is damaged. Please try to repair your game.
     <<jump DoRepair>>
 <<endif>>
 
@@ -34,7 +35,10 @@ position: 252,387
 title: Plugins
 position: 255,298
 ---
+
 go away
+[img src="shibe" alt="A shibe dog"/]
+
 ===
 
 title: Launcher
