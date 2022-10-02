@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "Helpy.ScriptCompiler": {
-      "commandName": "Project",
-      "commandLineArgs": "G:\\Code\\goatcorp\\helpy\\Helpy\\wwwroot\\flow\\"
-    }
-  }
-}
