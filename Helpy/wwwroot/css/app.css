@@ -67,12 +67,29 @@ a, .btn-link {
     padding-top: 0px;
     padding-bottom: 0px;
     margin-bottom: 0.4rem;
+    padding-left: 0.2rem;
 }
 
-.msg.msg-user {
+.connected {
+    margin-top: -0.7rem;
+}
+
+.msg p
+{
+    padding-top: 0px;
+    padding-bottom: 0.2rem;
+    padding-left: 0.5rem;
+    margin: 0;
+}
+
+.msg-user {
     background-color: lightblue;
 }
 
-.msg.msg-bot {
+.msg-bot {
     background-color: lightgreen;
+}
+
+.username {
+    font-size: 0.7rem;
 }

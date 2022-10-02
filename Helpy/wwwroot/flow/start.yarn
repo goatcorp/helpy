@@ -19,6 +19,8 @@ position: 252,387
 ---
 <<if !visited("Crashes")>>
     // TODO: images & instructions
+    I need some extra information about your game to help here.
+    You should have received a "tspack" file - please upload it here.
     <<UploadTspack>>
 <<endif>>
 

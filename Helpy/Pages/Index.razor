@@ -3,7 +3,7 @@
 @using Helpy.Conversation;
 @inject HttpClient Http
 
-<PageTitle>Index</PageTitle>
+<PageTitle>XIVLauncher Help</PageTitle>
 
 @if(conversation == null)
 {
@@ -11,10 +11,24 @@
 }
 else
 {
+    var lastWasUser = true;
     @foreach (var message in conversation.Messages)
     {
+        var isChange = lastWasUser != message.IsUser;
+
         var msgClass = "msg " + (message.IsUser ? "msg-user" : "msg-bot");
-        <p class="@msgClass">@((MarkupString)message.Text)</p>
+        if (!isChange)
+            msgClass += " connected";
+
+        <div class="@msgClass">
+            @if (isChange)
+            {
+                <span class="username">@(message.IsUser ? "You" : "Helpy")</span>
+                lastWasUser = message.IsUser;
+            }
+            
+            <p>@((MarkupString)message.Text)</p>
+        </div>
     }
 
     @switch(conversation.State)
@@ -39,6 +53,13 @@ else
                     <p><a @onclick="() => conversation.ChoicerChoose(choice.Key)" href="#">@choice.Value</a></p>
             }
         }    
+            break;
+
+        @case ConversationManager.ConversationState.Finish:
+        {
+            <hr />
+                <p>Thanks for using Helpy! I hope we could be helpful. If you have any more questions, don't hesitate to reach out.</p>
+        }
             break;
     }
 }
