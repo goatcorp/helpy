@@ -30,20 +30,20 @@ else
 
     @switch(conversation.State)
     {
-        @case ConversationManager.ConversationState.Default:
+        case ConversationManager.ConversationState.Default:
             break;
 
-        @case ConversationManager.ConversationState.UploadTsPack:
+        case ConversationManager.ConversationState.UploadTsPack:
         {
             <hr />
             <div class="msg msg-action">
                 <p>Drag the .tspack file here.</p>
-                <InputFile OnChange="@LoadTsPack"></InputFile>
+                <InputFile OnChange="@LoadTsPack" accept=".tspack"></InputFile>
             </div>
         }
             break;
 
-        @case ConversationManager.ConversationState.Choicer:
+        case ConversationManager.ConversationState.Choicer:
         {
             <hr />
             <div class="msg msg-choices">
@@ -56,7 +56,7 @@ else
         }    
             break;
 
-        @case ConversationManager.ConversationState.Finish:
+        case ConversationManager.ConversationState.Finish:
         {
             <hr />
                 <p>Thanks for using Helpy! I hope we could be helpful. If you have any more questions, don't hesitate to reach out.</p>
