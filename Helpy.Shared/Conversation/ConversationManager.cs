@@ -51,6 +51,7 @@ namespace Helpy.Shared.Conversation
             Default,
             Choicer,
             UploadTsPack,
+            Typing,
             Finish
         }
 

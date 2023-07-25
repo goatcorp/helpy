@@ -64,6 +64,14 @@ else
         }    
             break;
 
+        case ConversationManager.ConversationState.Typing:
+        {
+            <div class="msg msg-bot">
+                <span class="typingindicator"></span>
+            </div>
+        }
+            break;
+            
         case ConversationManager.ConversationState.Finish:
         {
             <hr />
