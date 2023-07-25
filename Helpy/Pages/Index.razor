@@ -10,6 +10,7 @@
 }
 else
 {
+    <!-- HELPY CONVERSATION -->
     var lastWasUser = true;
     @foreach (var message in conversation.Messages)
     {
@@ -22,7 +23,7 @@ else
             <span class=@nameClass>@(message.IsUser ? "You" : "Helpy")</span>
             lastWasUser = message.IsUser;
         }
-        <div class="@msgClass">
+        <div class="@msgClass" @key="message">
             @if (message is ConversationManager.TextMessage textMessage)
             {
                 <p>@((MarkupString)textMessage.Text)</p>
@@ -33,6 +34,15 @@ else
                     <img src="@imageMessage.Src" alt="@imageMessage.Alt"/>
                 </div>
             }
+        </div>
+    }
+    
+    @if (conversation.IsThinking)
+    {
+        <div class="msg msg-bot">
+            <div class="typingcontainer">
+                <span class="typingindicator"></span>
+            </div>
         </div>
     }
 
@@ -64,14 +74,6 @@ else
         }    
             break;
 
-        case ConversationManager.ConversationState.Typing:
-        {
-            <div class="msg msg-bot">
-                <span class="typingindicator"></span>
-            </div>
-        }
-            break;
-            
         case ConversationManager.ConversationState.Finish:
         {
             <hr />
@@ -86,8 +88,15 @@ else
 
     public async Task RunDialogue()
     {
+        Console.WriteLine("Begin loading");
         conversation = new ConversationManager();
+        conversation.OnBeginThinking += (_, _) => StateHasChanged();
+        conversation.OnEndThinking += (_, _) => StateHasChanged();
+        conversation.OnHaveNewMessage += (_, _) => StateHasChanged();
+        conversation.OnStateChange += (_, _) => StateHasChanged();
+        
         await conversation.LoadAndInit(Http);
+        Console.WriteLine("End loading");
     }
 
     public async Task LoadTsPack(InputFileChangeEventArgs e)

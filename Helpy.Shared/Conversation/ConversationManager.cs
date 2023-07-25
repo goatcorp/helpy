@@ -42,20 +42,37 @@ namespace Helpy.Shared.Conversation
             public string Alt { get; private set; }
         }
 
+        public event EventHandler<Message>? OnHaveNewMessage;
+        public event EventHandler? OnBeginThinking;
+        public event EventHandler? OnEndThinking;
+        public event EventHandler<ConversationState>? OnStateChange;
+
+
         public List<Message> Messages { get; private set; } = new List<Message>();
 
         public IReadOnlyDictionary<int, string>? Choices;
+
+        public bool IsThinking { get; private set; } = true;
 
         public enum ConversationState
         {
             Default,
             Choicer,
             UploadTsPack,
-            Typing,
             Finish
         }
 
-        public ConversationState State { get; private set; }
+        private ConversationState stateInternal;
+
+        public ConversationState State
+        {
+            get => stateInternal;
+            private set
+            {
+                stateInternal = value;
+                OnStateChange?.Invoke(this, stateInternal);
+            }
+        }
 
         public TroubleContext? Trouble { get; private set; }
 
@@ -96,7 +113,7 @@ namespace Helpy.Shared.Conversation
         private void HandleLine(Line line)
         {
             var lineStr = this.stringTable![line.ID];
-            Console.WriteLine(lineStr);
+            Console.WriteLine($"Line: {lineStr}");
 
             var markup = dialogue!.ParseMarkup(lineStr);
             var rawLine = markup.Text;
@@ -139,14 +156,36 @@ namespace Helpy.Shared.Conversation
                 }
             }
 
-            if (!string.IsNullOrEmpty(rawLine)) 
-                Messages.Add(new TextMessage(rawLine, false));
-            
-            if (imageLink != null)
-                Messages.Add(new ImageMessage(imageLink, "aaa", false));
+            Task.Run(async () =>
+            {
+                var delay = string.IsNullOrEmpty(rawLine) ? 0 : rawLine.Length * 25;
+                if (delay != 0)
+                {
+                    IsThinking = true;
+                    OnBeginThinking?.Invoke(this, null);
+                    await Task.Delay(Math.Min(delay, 1000));
+                    IsThinking = false;
+                    OnEndThinking?.Invoke(this, null);
+                }
                 
-            if (State != ConversationState.Finish)
-                dialogue!.Continue();
+                Console.WriteLine("Added");
+
+                Message? messageToAdd = null;
+                if (!string.IsNullOrEmpty(rawLine)) 
+                    messageToAdd = new TextMessage(rawLine, false);
+
+                if (imageLink != null)
+                    messageToAdd = new ImageMessage(imageLink, "aaa", false);
+
+                if (messageToAdd == null)
+                    throw new Exception("Message was null");
+                
+                Messages.Add(messageToAdd);
+                OnHaveNewMessage?.Invoke(this, messageToAdd);
+                
+                if (State != ConversationState.Finish)
+                    dialogue!.Continue();
+            });
         }
 
         private string GetLocalized(string lineId)
@@ -172,7 +211,6 @@ namespace Helpy.Shared.Conversation
 
         private void HandleOptions(OptionSet set)
         {
-            State = ConversationState.Choicer;
             Choices = set.Options
                 .Where(x => x.IsAvailable)
                 .ToDictionary(x => x.ID, x => GetLocalized(x.Line.ID));
@@ -183,6 +221,8 @@ namespace Helpy.Shared.Conversation
 
                 Console.WriteLine($"{option.ID} - {lineStr}");
             }
+            
+            State = ConversationState.Choicer;
         }
 
         private void HandleNodeComplete(string completedNodeName)
@@ -201,8 +241,8 @@ namespace Helpy.Shared.Conversation
             Messages.Add(new TextMessage(Choices![option], true));
 
             dialogue!.SetSelectedOption(option);
-            State = ConversationState.Default;
             Choices = null;
+            State = ConversationState.Default;
 
             dialogue!.Continue();
         }

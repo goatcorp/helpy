@@ -211,6 +211,14 @@ hr.user-input {
     }
 }
 
+.typingcontainer {
+    width: 50px;
+    align-items: center;
+    display: flex;
+    height: 20px;
+    flex-direction: column;
+}
+
 .typingindicator, .typingindicator:before, .typingindicator:after {
     border-radius: 50%;
     width: 2.5em;
@@ -220,7 +228,7 @@ hr.user-input {
 }
 .typingindicator {
     color: #FFF;
-    font-size: 7px;
+    font-size: 3px;
     position: relative;
     text-indent: -9999em;
     transform: translateZ(0);
