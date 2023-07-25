@@ -1,13 +1,14 @@
 ﻿using System.IO.Compression;
-using System.Reflection.Metadata;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 
-namespace Helpy.Conversation
+namespace Helpy.Shared.Conversation
 {
     public class TroubleContext
     {
         public bool IsPackLoaded { get; private set; }
+
+        public bool IsCrashPack => !string.IsNullOrEmpty(CrashLog);
 
         public TroubleshootingPayloadXL? PayloadXL { get; private set; }
 
@@ -16,6 +17,8 @@ namespace Helpy.Conversation
         public string? DalamudLog { get; private set; }
 
         public string? LauncherLog { get; private set; }
+        
+        public string? CrashLog { get; private set; }
 
         public ExceptionPayload? LastExceptionXL { get; private set; }
         
@@ -46,6 +49,8 @@ namespace Helpy.Conversation
             DalamudLog = ReadEntry(archive.GetEntry("dalamud.log"));
             FindDalamudTrouble();
             LastExceptionDalamud = FindException(DalamudLog);
+
+            CrashLog = ReadEntry(archive.GetEntry("crash.log"));
 
             IsPackLoaded = true;
         }

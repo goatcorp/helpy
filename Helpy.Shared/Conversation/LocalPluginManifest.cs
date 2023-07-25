@@ -1,7 +1,6 @@
 ﻿using System.Text.Json.Serialization;
-using System.Xml;
 
-namespace Helpy.Conversation
+namespace Helpy.Shared.Conversation
 {
     /// <summary>
     /// Information about a plugin, packaged in a json file with the DLL.

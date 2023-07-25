@@ -12,4 +12,8 @@
     <PackageReference Include="YarnSpinner" Version="2.2.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Helpy.Shared\Helpy.Shared.csproj" />
+  </ItemGroup>
+
 </Project>

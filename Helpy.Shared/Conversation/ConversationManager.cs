@@ -1,7 +1,7 @@
 ﻿using System.Net.Http.Json;
 using Yarn;
 
-namespace Helpy.Conversation
+namespace Helpy.Shared.Conversation
 {
     public class ConversationManager
     {

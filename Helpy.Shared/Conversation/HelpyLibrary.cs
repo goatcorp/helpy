@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using Yarn;
 
-namespace Helpy.Conversation
+namespace Helpy.Shared.Conversation
 {
     public class HelpyLibrary : Library
     {
@@ -63,8 +63,10 @@ namespace Helpy.Conversation
             RegisterFunction("HasAutoLogin", FunHasAutoLogin);
             RegisterFunction("HasThirdPlugins", FunHasThirdPlugins);
             RegisterFunction("HasSpecificPlugin", FunHasSpecificPlugin);
+            RegisterFunction("IsCrashTsPack", FunIsCrashTsPack);
             RegisterFunction("RegexLastExceptionDalamud", FunRegexLastExceptionDalamud);
             RegisterFunction("RegexLastExceptionXL", FunRegexLastExceptionXL);
+            RegisterFunction("RegexCrashLog", FunRegexCrashLog);
             RegisterFunction("HasRecentExceptionDalamud", FunHasRecentExceptionDalamud);
             RegisterFunction("HasRecentExceptionXL", FunHasRecentExceptionXL);
             RegisterFunction("HasRecentException", FunHasRecentException);
@@ -172,6 +174,13 @@ namespace Helpy.Conversation
 
             return trouble.PayloadDalamud?.LoadedPlugins.Any(x => x.InternalName == name) ?? false;
         }
+        
+        private bool FunIsCrashTsPack()
+        {
+            CheckPrecondition();
+
+            return trouble.IsCrashPack;
+        }
 
         private bool FunRegexLastExceptionDalamud(string regexStr)
         {
@@ -193,6 +202,17 @@ namespace Helpy.Conversation
 
             var regex = new Regex(regexStr);
             return regex.IsMatch(trouble.LastExceptionXL.Info);
+        }
+        
+        private bool FunRegexCrashLog(string regexStr)
+        {
+            CheckPrecondition();
+
+            if (trouble.CrashLog == null)
+                return false;
+
+            var regex = new Regex(regexStr);
+            return regex.IsMatch(trouble.CrashLog);
         }
 
         const int ExceptionDaysLimit = 2;
