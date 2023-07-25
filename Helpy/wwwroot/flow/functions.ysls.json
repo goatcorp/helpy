@@ -3,7 +3,7 @@
         {
             "YarnName": "UploadTspack",
             "DefinitionName": "RunUploadTspack",
-            "Language": "gml",
+            "Language": "csharp",
             "Documentation": "Uploads a troubleshooting pack for parsing",
             "Parameters": []
         }
