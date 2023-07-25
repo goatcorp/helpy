@@ -118,6 +118,7 @@ namespace Helpy.Shared.Conversation
             var markup = dialogue!.ParseMarkup(lineStr);
             var rawLine = markup.Text;
             string? imageLink = null;
+            string? altText = null;
             foreach (var attrib in markup.Attributes)
             {
                 var text = markup.TextForAttribute(attrib);
@@ -143,6 +144,7 @@ namespace Helpy.Shared.Conversation
 
                         newText = string.Empty;
                         imageLink = linkHref;
+                        altText = attrib.Properties["alt"].StringValue;
                     }
                         break;
                     default:
@@ -175,7 +177,10 @@ namespace Helpy.Shared.Conversation
                     messageToAdd = new TextMessage(rawLine, false);
 
                 if (imageLink != null)
-                    messageToAdd = new ImageMessage(imageLink, "aaa", false);
+                {
+                    altText ??= "Picture";
+                    messageToAdd = new ImageMessage(imageLink, altText, false);
+                }
 
                 if (messageToAdd == null)
                     throw new Exception("Message was null");
