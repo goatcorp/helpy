@@ -7,17 +7,33 @@ Hi! I'm Helpy, the interactive and smart XIVLauncher helper.
 Please choose what you're here to get help with.
 
 -> My game crashes or behaves strangely
-    <<jump Crashes>>
--> A plugin or Dalamud does not work as expected
-    <<jump Plugins>>
+    <<jump CrashesWhichType>>
+//-> A plugin or Dalamud does not work as expected
+//    <<jump Plugins>>
 -> The launcher isn't opening or behaves strangely
     <<jump Launcher>>
 ===
 
-title: Crashes
-position: 252,387
+title: CrashesWhichType
+position: 231,446
 ---
-<<if !visited("Crashes")>>
+<<declare $UserIndicatedCrashType = 0 as number>>
+
+What type of crash are you encountering?
+-> I receive a message box stating "An error in the game has occurred"
+    <<set $UserIndicatedCrashType to 1>>
+-> The game closes by itself
+    <<set $UserIndicatedCrashType to 2>>
+-> I receive a message by the game containing Japanese text
+    <<set $UserIndicatedCrashType to 3>>
+
+<<jump CrashesUploadTsPack>>
+===
+
+title: CrashesUploadTsPack
+position: 151,749
+---
+<<if !visited("CrashesUploadTsPack")>>
     // TODO: images & instructions
     I need some extra information about your game to help here.
     You should have received a "tspack" file - please upload it here.
@@ -29,11 +45,33 @@ position: 252,387
     <<jump DoRepair>>
 <<endif>>
 
+<<if HasThirdPlugins() == true>>
+    <<jump StartWithoutThirdPlugins>>
+<<endif>>
+
 <<jump GoToDiscord>>
 ===
 
+title: StartWithoutThirdPlugins
+position: 533,823
+---
+
+<<if HasSpecificPlugin("Penumbra") == true>>
+    You seem to be using plugins from custom repositories, such as Penumbra, indicated by a yellow "3" icon in the plugin installer.
+<<else>>
+    You seem to be using plugins from custom repositories, indicated by a yellow "3" icon in the plugin installer.
+<<endif>>
+
+These plugins are not officially supported by the XIVLauncher developers and are prone to cause crashes or other strange behaviour. Please try launching without these plugins, to check if the issue still occurrs.
+To do this, on the main XIVLauncher page, right click the login button and choose "Start w/o Third-Party plugins".
+If you enabled auto-login in XIVLauncher, and it automatically starts the game, you will have to hold shift while clicking the XIVLauncher icon to do this.
+
+[img src="disableunsupported" alt="The XIVLauncher window, with a mouse cursor resting on the login button. A context menu is open, with an entry stating Start without Third-party plugins underlined."/]
+
+===
+
 title: Plugins
-position: 255,298
+position: 1,-41
 ---
 
 go away
@@ -42,7 +80,7 @@ go away
 ===
 
 title: Launcher
-position: 248,202
+position: 257,124
 ---
 <<declare $RepairFailedFromLauncher = false as bool>>
 
@@ -69,7 +107,7 @@ What's wrong with the launcher?
 ===
 
 title: DoRepair
-position: 453,533
+position: 574,332
 ---
 <<declare $RepairFailedFromDoRepair = false as bool>>
 <<declare $AlreadyRepaired = false as bool>>
@@ -106,7 +144,7 @@ You might need to also restart your computer.
 ===
 
 title: Antivirus
-position: 626,62
+position: 626,-41
 ---
 Please read [link href="faq_av"]our FAQ entry[/link] regarding permitting XIVLauncher and Dalamud in your antivirus.
 Keep in mind that some antivirus software sometimes don't listen to the exclusions you make.
@@ -120,7 +158,7 @@ Please read [link href="faq_connectivity"]our FAQ entry[/link] regarding network
 ===
 
 title: GoToDiscord
-position: 1033,191
+position: 1031,109
 ---
 I don't think I can help you with this here.
 Please join our Discord server.
@@ -129,7 +167,7 @@ Please join our Discord server.
 ===
 
 title: Goodbye
-position: 1034,254
+position: 1020,276
 ---
 That's all the advice I can offer. Thanks for using Helpy!
 If your issue isn't solved, consider trying Helpy again or joining our Discord server for more specialized help.
