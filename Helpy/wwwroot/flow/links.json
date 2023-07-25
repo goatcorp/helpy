@@ -2,5 +2,6 @@
 	"discord": "https://goat.place",
 	"faq_connectivity": "https://goatcorp.github.io/faq/xl_troubleshooting#q-the-official-launcher-isnt-working--xivlauncher-failed-to-check-for-updates--patch-files-could-not-be-verified",
 	"faq_av": "https://goatcorp.github.io/faq/xl_troubleshooting#q-how-do-i-whitelist-xivlauncher-and-dalamud-so-my-antivirus-leaves-them-alone",
-	"shibe": "https://cdn.shibe.online/shibes/5db64cb0f69264952c5812c4fde0829dcd03e6ae.jpg"
+	"shibe": "https://cdn.shibe.online/shibes/5db64cb0f69264952c5812c4fde0829dcd03e6ae.jpg",
+	"disableunsupported": "https://media.discordapp.net/attachments/719513457988337724/1111185623064248360/image.png"
 }
