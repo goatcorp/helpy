@@ -136,6 +136,10 @@ hr.user-input {
     height: 1px;
 }
 
+.endofconvo {
+    margin-bottom: 4em;
+}
+
 .loading-info {
     /* border: 5px solid; */
     margin: auto;

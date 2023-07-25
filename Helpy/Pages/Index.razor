@@ -1,6 +1,8 @@
 ﻿@page "/"
 @using Helpy.Shared.Conversation
+
 @inject HttpClient Http
+@inject IJSRuntime JSRuntime
 
 <PageTitle>XIVLauncher Help</PageTitle>
 
@@ -77,7 +79,10 @@ else
         case ConversationManager.ConversationState.Finish:
         {
             <hr />
+            <div class="endofconvo">
                 <p>Thanks for using Helpy! I hope we could be helpful. If you have any more questions, don't hesitate to reach out.</p>
+                <p><a @onclick="@CopyConversation" href="#">Copy conversation to clipboard</a></p>
+            </div>
         }
             break;
     }
@@ -86,6 +91,29 @@ else
 @code {
     private ConversationManager? conversation;
 
+    public async Task CopyConversation()
+    {
+        if (this.conversation == null)
+            return;
+
+        var conversationLog = "```\n";
+        foreach (var message in conversation.Messages)
+        {
+            conversationLog += (message.IsUser ? "User" : "System") + ":\n";
+            
+            if (message is ConversationManager.TextMessage textMessage)
+                conversationLog += textMessage.Text + "\n";
+            else if (message is ConversationManager.ImageMessage imageMessage)
+                conversationLog += $"[{imageMessage.Alt}]" + "\n";
+            
+            conversationLog += "========================\n";
+        }
+        
+        conversationLog += "END OF CONVERSATION\n```";
+        
+        await JSRuntime.InvokeVoidAsync("clipboardCopy.copyText", conversationLog);
+    }
+    
     public async Task RunDialogue()
     {
         Console.WriteLine("Begin loading");
