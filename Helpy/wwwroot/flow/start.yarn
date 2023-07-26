@@ -8,14 +8,16 @@ Please choose what you're here to get help with.
 
 -> My game crashes or behaves strangely
     <<jump CrashesWhichType>>
-//-> A plugin or Dalamud does not work as expected
-//    <<jump Plugins>>
 -> The launcher isn't opening or behaves strangely
     <<jump Launcher>>
+-> I have a question about a specific plugin
+    <<jump SpecificPluginQuestion>>
+//-> A plugin or Dalamud does not work as expected
+//    <<jump Plugins>>
 ===
 
 title: CrashesWhichType
-position: 231,446
+position: 94,488
 ---
 <<declare $UserIndicatedCrashType = 0 as number>>
 
@@ -26,6 +28,8 @@ What type of crash are you encountering?
     <<set $UserIndicatedCrashType to 2>>
 -> I receive a message by the game containing Japanese text
     <<set $UserIndicatedCrashType to 3>>
+-> The game closed and XIVLauncher disappeared
+    <<jump Antivirus>>
 
 <<jump CrashesUploadTsPack>>
 ===
@@ -34,9 +38,23 @@ title: CrashesUploadTsPack
 position: 151,749
 ---
 <<if !visited("CrashesUploadTsPack")>>
-    // TODO: images & instructions
     I need some extra information about your game to help here.
-    You should have received a "tspack" file - please upload it here.
+
+    <<if $UserIndicatedCrashType == 1>>
+        In the crash window, please click the "this file" link. It will prompt you to save a file containing information about the crash.
+        Save this file to a place on your PC, and upload it below.
+
+        [img src="upload_crash_tspack" alt="The Dalamud crash window, with a link used to generate a crash report circled. The link reads this file."]
+    <<elseif $UserIndicatedCrashType >= 2 || $UserIndicatedCrashType == 0>>
+        <<if $UserIndicatedCrashType == 2>>
+            Immediately after the crash, please open the XIVLauncher main page.
+        <<else>>
+            Immediately after encountering the problem, please close the game, and open the XIVLauncher main page.
+        <<endif>>
+
+        If you enabled auto-login in XIVLauncher, and it automatically starts the game, you will have to hold shift while clicking the XIVLauncher icon to do this.
+    <<endif>>
+
     <<UploadTspack>>
 <<endif>>
 
@@ -62,12 +80,36 @@ position: 533,823
     You seem to be using plugins from custom repositories, indicated by a yellow "3" icon in the plugin installer.
 <<endif>>
 
+[img src="thirdplugins" alt="An entry of a plugin in the plugin installer, marked with a yellow 3 on its icon"/]
+
 These plugins are not officially supported by the XIVLauncher developers and are prone to cause crashes or other strange behaviour. Please try launching without these plugins, to check if the issue still occurrs.
 To do this, on the main XIVLauncher page, right click the login button and choose "Start w/o Third-Party plugins".
 If you enabled auto-login in XIVLauncher, and it automatically starts the game, you will have to hold shift while clicking the XIVLauncher icon to do this.
 
 [img src="disableunsupported" alt="The XIVLauncher window, with a mouse cursor resting on the login button. A context menu is open, with an entry stating Start without Third-party plugins underlined."/]
 
+After starting the game in this way, please play for a while to see if you can still encounter the crash.
+
+-> The game still crashes
+    <<jump GoToDiscord>>
+-> The crash is solved
+    <<jump ThirdPluginSupportNeeded>>
+===
+
+title: ThirdPluginSupportNeeded
+position: 858,756
+---
+This confirms that the crash is caused by these plugins. We sadly cannot help you figure out which specific plugin is causing this issue.
+You may have to try to disable them one-by-one until you find the plugin that is causing the problem.
+
+<<if HasSpecificPlugin("Penumbra") == true && HasSpecificPlugin("MareSynchronos") == false >>
+It is also possible that the problem lies with a specific Penumbra mod you are using. You should head over to the Penumbra Discord server to ask for guidance if you can't find the mod that is causing the problem.
+<<elseif HasSpecificPlugin("Penumbra") == true && HasSpecificPlugin("MareSynchronos") == true>>
+It is also possible that the problem lies with a specific Penumbra mod you are using, or with a mod that is used by someone you are paired with via Mare Synchronos. You should head over to the Penumbra Discord server to ask for guidance if you can't find the mod that is causing the problem.
+<<endif>>
+
+<<set $OfferJoinDiscord to false>>
+<<jump Goodbye>>
 ===
 
 title: Plugins
@@ -107,7 +149,7 @@ What's wrong with the launcher?
 ===
 
 title: DoRepair
-position: 574,332
+position: 666,280
 ---
 <<declare $RepairFailedFromDoRepair = false as bool>>
 <<declare $AlreadyRepaired = false as bool>>
@@ -129,7 +171,7 @@ position: 574,332
 ===
 
 title: FailedRepair
-position: 745,529
+position: 433,531
 ---
 Try closing other programs related to FFXIV, like Teamcraft or TexTools.
 You might need to also restart your computer.
@@ -157,20 +199,43 @@ position: 626,108
 Please read [link href="faq_connectivity"]our FAQ entry[/link] regarding network connection issues.
 ===
 
-title: GoToDiscord
-position: 1031,109
+title: SpecificPluginQuestion
+position: 850,566
 ---
-I don't think I can help you with this here.
-Please join our Discord server.
+I can't help you with questions about specific plugins, but feel free to ask in the plugin-specific forum on our Discord server.
+The plugin's developers will be happy to help out there.
+
+[button href="discord"]Join our Discord server[/button]
+
+Please keep in mind that we only support official plugins, which do not come from custom repositories, on our Discord server. If you have a question about a plugin from a custom repository, you should reach out to its developer directly.
+Unsupported plugins are marked with a yellow "3" in the plugin installer.
+[img src="thirdplugins" alt="An entry of a plugin in the plugin installer, marked with a yellow 3 on its icon"/]
+
+<<stop>>
+===
+
+
+title: GoToDiscord
+position: 850,566
+---
+Sorry, but it looks like I can't help you with this here.
+Please join our Discord server and post your crash information, together with a log of this conversation.
+You can copy the log by using the "Copy conversation to clipboard" button below.
 
 [button href="discord"]Join our Discord server[/button]
 ===
 
 title: Goodbye
-position: 1020,276
+position: 1202,248
 ---
-That's all the advice I can offer. Thanks for using Helpy!
-If your issue isn't solved, consider trying Helpy again or joining our Discord server for more specialized help.
+<<declare $OfferJoinDiscord = true as bool>>
 
-[button href="discord"]Join our Discord server[/button]
+That's all the advice I can offer. Thanks for using Helpy!
+If your issue isn't solved, consider trying Helpy again.
+
+<<if $OfferJoinDiscord == true>>
+    If you want more specialized help, you can also join our discord server by clicking the link below.
+    It would help if you could post a log of this conversation by clicking "Copy conversation to clipboard" below.
+    [button href="discord"]Join our Discord server[/button]
+<<endif>>
 ===
